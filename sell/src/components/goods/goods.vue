@@ -32,9 +32,9 @@
           <td>{{color}}</td>
           <td v-for="(size,index2) in sizes">
             <input v-model="count[index1][index2]" :id="index1 + '_' + index2"
-                   @blur="check(index1,index2,detailMap[color][size])" type="text"
+                   @blur="check(index1,index2,goods.goods[index1].detail[index2].stock)" type="text"
                    @keyup="count[index1][index2]=count[index1][index2].replace(/[^\d]/g,'')"
-                   :placeholder="detailMap[color][size]">
+                   :placeholder="goods.goods[index1].detail[index2].stock">
           </td>
           <td>{{totalCount[index1]}}</td>
         </tr>
@@ -57,7 +57,6 @@
         colorsString: "",
         sizesString: "",
         sizes: [],
-        detailMap: {},
         goods: {},
         orderShow: false,
         topSize: -40,
@@ -86,15 +85,15 @@
             this.sizes.push(detail[i].size);
           }
           this.sizesString = this.sizes.join(",");
-          for (let i in goods) {
-            let temp = {};
-
-            for (let j in goods[i].detail) {
-              temp[goods[i].detail[j].size] = goods[i].detail[j].stock;
-            }
-            this.detailMap[goods[i].color] = temp;
-            console.log(this.detailMap)
-          }
+//          for (let i in goods) {
+//            let temp = {};
+//
+//            for (let j in goods[i].detail) {
+//              temp[goods[i].detail[j].size] = goods[i].detail[j].stock;
+//            }
+//            this.detailMap[goods[i].color] = temp;
+//            console.log(this.detailMap)
+//          }
         }
         for (let i = 0; i < this.colors.length; i++) {
           this.count[i] = new Array();
@@ -109,14 +108,6 @@
       goBuy() {
         this.orderShow = true
       },
-      format(index1, index2) {
-        let currentCount = this.count[index1][index2];
-        currentCount = currentCount + "";
-        currentCount = currentCount.replace(/\D/g, '');
-        this.count[index1][index2] = currentCount;
-        console.log(this.count);
-      },
-
       getamount(index1) {
         let tempSum = 0;
         let num = 0;
